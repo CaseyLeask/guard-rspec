@@ -26,6 +26,7 @@ module Guard
         warn_deprectation(options)
 
         cmd_parts = []
+        cmd_parts << options[:prefix] if options[:prefix]
         cmd_parts << "rvm #{options[:rvm].join(',')} exec" if options[:rvm].is_a?(Array)
         cmd_parts << "bundle exec" if (bundler? && options[:binstubs] == true && options[:bundler] != false) || (bundler? && options[:bundler] != false)
         cmd_parts << rspec_exec(options)
@@ -35,7 +36,7 @@ module Guard
         cmd_parts << "--failure-exit-code #{failure_exit_code}" if failure_exit_code_supported?(options)
         cmd_parts << paths.join(' ')
 
-        cmd_parts.join(' ')
+        cmd_parts.join(' ') + ';'
       end
 
       def drb?(options)
